@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>QR Code Wallet</title>
+  </head>
+  <body>
+    <h1>QR Code Wallet</h1>
+    
+    <label for="qr-code-input">Enter QR Code:</label>
+    <input type="text" id="qr-code-input">
+    <button onclick="sendQRCode()">Send QR Code</button>
+    
+    <h2>Received QR Codes:</h2>
+    <div id="qr-codes-list"></div>
+    
+    <script>
+      let qrCodes = [];
+
+      function sendQRCode() {
+        const qrCode = document.getElementById("qr-code-input").value;
+        qrCodes.push(qrCode);
+        document.getElementById("qr-codes-list").innerHTML += "<p>" + qrCode + "</p>";
+      }
+
+      function removeQRCode() {
+        const qrCodeToRemove = this.getAttribute("data-qr-code");
+        const index = qrCodes.indexOf(qrCodeToRemove);
+        if (index > -1) {
+          qrCodes.splice(index, 1);
+          this.parentNode.removeChild(this);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function() {
+        const qrCodesList = document.getElementById("qr-codes-list");
+        for (const qrCode of qrCodes) {
+          const qrCodeElement = document.createElement("p");
+          qrCodeElement.innerText = qrCode;
+          qrCodeElement.setAttribute("data-qr-code", qrCode);
+          qrCodeElement.onclick = removeQRCode;
+          qrCodesList.appendChild(qrCodeElement);
+        }
+      });
+    </script>
+  </body>
+</html>
